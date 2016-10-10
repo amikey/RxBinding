@@ -2,10 +2,6 @@ language: android
 
 android:
   components:
-    - tools
-    - platform-tools
-    - build-tools-24.0.0
-    - android-24
     - extra-android-m2repository
     - sys-img-armeabi-v7a-android-18
 
@@ -13,6 +9,9 @@ jdk:
   - oraclejdk8
 
 before_script:
+  # SDK licenses
+  - mkdir "$ANDROID_HOME/licenses" || true
+  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
   # Kotlin binding staleness check.
   - ./gradlew generateKotlin
   - if [ ! -z "$(git status --porcelain)" ]; then echo "Bindings changed. Did you run 'generateKotlin'?"; exit 1; fi
